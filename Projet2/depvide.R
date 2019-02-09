@@ -1,0 +1,231 @@
+## Algorithme de Metropolis pour le coloriage des departements ##
+## en  L = 60 niveaux de gris ##
+
+## Nombre de departements
+
+N = 95 
+
+## Matrice de voisinage des departements 
+## V[i,j] = 1 si les departements i et j se touchent
+
+V <- array(0,dim=c(N,N)) 
+
+V[1,39]=1; V[1,74]=1; V[1,73]=1; V[1,38]=1; V[1,69]=1; V[1,71]=1;
+V[2,8]=1; V[2,51]=1; V[2,77]=1; V[2,60]=1; V[2,80]=1; V[2,59]=1;
+V[3,71]=1; V[3,42]=1; V[3,63]=1; V[3,23]=1; V[3,18]=1; V[3,58]=1;
+V[4,5]=1; V[4,6]=1; V[4,83]=1; V[4,84]=1; V[4,26]=1;
+V[5,26]=1; V[5,38]=1; V[5,73]=1; 
+V[6,83]=1;
+V[7,26]=1; V[7,30]=1; V[7,38]=1; V[7,43]=1; V[7,48]=1; 
+V[7,42]=1; V[7,84]=1; 
+V[8,51]=1; V[8,55]=1;
+V[9,11]=1; V[9,66]=1; V[9,31]=1;
+V[10,21]=1; V[10,89]=1; V[10,77]=1; V[10,51]=1; V[10,52]=1;
+V[11,66]=1; V[11,31]=1; V[11,81]=1; V[11,34]=1;
+V[12,15]=1; V[12,48]=1; V[12,30]=1; V[12,34]=1; V[12,81]=1; 
+V[12,82]=1; V[12,46]=1;
+V[13,83]=1; V[13,84]=1; V[13,30]=1;
+V[14,50]=1; V[14,61]=1; V[14,27]=1;
+V[15,19]=1; V[15,63]=1; V[15,43]=1; V[15,48]=1; V[15,46]=1;
+V[16,17]=1; V[16,79]=1; V[16,86]=1; V[16,87]=1; V[16,24]=1;
+V[17,85]=1; V[17,79]=1; V[17,24]=1; V[17,33]=1; 
+V[18,23]=1; V[18,36]=1; V[18,41]=1; V[18,45]=1; V[18,58]=1;
+V[19,24]=1; V[19,87]=1; V[19,23]=1; V[19,63]=1; V[19,46]=1;
+V[21,52]=1; V[21,70]=1; V[21,39]=1; V[21,71]=1; V[21,58]=1; 
+V[21,89]=1;
+V[22,29]=1; V[22,56]=1; V[22,35]=1;
+V[23,36]=1; V[23,63]=1; V[23,87]=1;
+V[24,33]=1; V[24,87]=1; V[24,46]=1; V[24,47]=1;
+V[25,39]=1; V[25,70]=1; V[25,90]=1; V[25,68]=1;
+V[26,38]=1; V[26,84]=1;
+V[27,28]=1; V[27,61]=1; V[27,76]=1; V[27,60]=1; V[27,95]=1; 
+V[27,78]=1; 
+V[28,61]=1; V[28,41]=1; V[28,45]=1; V[28,91]=1; V[28,78]=1; 
+V[28,72]=1;
+V[29,56]=1;
+V[30,34]=1; V[30,48]=1; V[30,84]=1;
+V[31,32]=1; V[31,82]=1; V[31,81]=1; V[31,65]=1;
+V[32,40]=1; V[32,47]=1; V[32,82]=1; V[32,65]=1; V[32,64]=1;
+V[33,40]=1; V[33,47]=1;
+V[34,81]=1;
+V[35,53]=1; V[35,50]=1; V[35,44]=1; V[35,56]=1;
+V[36,37]=1; V[36,41]=1; V[36,87]=1; V[36,86]=1;
+V[37,41]=1; V[37,49]=1; V[37,72]=1; V[37,86]=1; 
+V[38,42]=1; V[38,69]=1; V[38,73]=1;
+V[39,71]=1; V[39,70]=1;
+V[40,47]=1; V[40,64]=1;
+V[41,45]=1; V[41,72]=1;
+V[42,63]=1; V[42,43]=1; V[42,63]=1; V[42,69]=1; V[42,71]=1;
+V[43,63]=1; V[43,48]=1;
+V[44,49]=1; V[44,85]=1; V[44,56]=1;
+V[45,91]=1; V[45,77]=1; V[45,89]=1 ; V[45,58]=1;
+V[46,47]=1; V[46,82]=1;
+V[47,82]=1;
+V[49,53]=1; V[49,72]=1; V[49,86]=1; V[49,79]=1; V[49,85]=1;
+V[50,61]=1; V[50,53]=1;
+V[51,52]=1; V[51,55]=1; V[51,77]=1;
+V[52,55]=1; V[52,88]=1; V[52,70]=1;
+V[53,61]=1; V[53,72]=1;
+V[54,55]=1; V[54,57]=1; V[54,88]=1;
+V[55,88]=1;
+V[57,67]=1;
+V[58,71]=1; V[58,89]=1;
+V[59,62]=1; V[59,80]=1;
+V[60,76]=1; V[60,95]=1; V[60,77]=1; V[60,80]=1;
+V[61,72]=1;
+V[62,80]=1;
+V[64,65]=1;
+V[67,68]=1; V[67,88]=1;
+V[68,90]=1; V[68,88]=1;
+V[69,71]=1;
+V[70,90]=1; V[70,88]=1;
+V[73,74]=1;
+V[75,94]=1; V[75,93]=1; V[75,92]=1;
+V[76,80]=1;
+V[77,89]=1; V[77,91]=1; V[77,93]=1; V[77,94]=1; V[77,95]=1; 
+V[78,91]=1; V[78,92]=1; V[78,95]=1; 
+V[79,85]=1; V[79,86]=1;
+V[81,82]=1;
+V[83,84]=1;
+V[86,87]=1;
+V[88,90]=1;
+V[91,92]=1; V[91,94]=1;
+V[92,93]=1; V[92,94]=1; V[92,95]=1;
+V[93,94]=1; V[93,95]=1;
+
+V = t(V) +V
+
+## Nombre de niveaux de gris L souhaite
+
+L = 60
+
+## Nombre d'iterations de l'algorithme
+
+nmax = 1000
+
+## Initialissation aleatoire des niveaux de gris des departements
+
+G<-sample(1:L,N,replace=T)
+
+###############################################################
+###                                                         ###
+###                                                         ###
+###                  Algorithme de Metropolis               ###
+###                                                         ###
+###                                                         ###
+###############################################################
+
+
+## A faire!!!!
+# 1er temps beta = 1
+bet = 1
+Hfonction = function(G) {
+  output = 0
+  for (j in (2:N)){
+    for (i in (1:j)){
+      output = output + abs(G[i]-G[j])*V[i,j]
+    }
+  }
+  return(output)
+}
+
+composante = function(G,coord) {
+    return(sum(abs(G[coord]-G)*V[,coord]))
+}
+transition1 = function(G,H){
+  maliste = list("G" = G, "H" = H)
+  Gnew = G
+  coord = sample(1:N,1)
+  petite = max(G[coord]-1,1)
+  grande = min(G[coord]+1,L)
+  Gnew[coord] = sample (c(petite,grande),1)
+  Delta = composante(Gnew,coord) - composante(G,coord)
+  alpha = min(exp(bet*Delta),1)
+  u = runif(1)
+  if(u <= alpha){
+    G = Gnew
+    H = H + Delta
+    maliste = list("G" = G, "H" = H)
+    return(maliste)
+    }
+  else {return(maliste)}
+}
+
+transition2 = function(G,H) {
+  Gnew = G
+  coord = sample(1:N,1)
+  piGibbs = rep(0,L)
+  for (i in (1:L)) {
+    Glocal = G
+    Glocal[coord] = i
+    piGibbs[i] = exp(bet*composante(Glocal,coord))
+  }
+  # normalisation
+  piGibbs = piGibbs/sum(piGibbs)
+  #print(piGibbs)
+  Gnew[coord] = sample(1:L,1,prob = piGibbs)
+  Delta = composante(Gnew,coord) - composante(G,coord)
+  # print(Gnew[coord])
+  # print(G[coord])
+  H = H + Delta
+  maliste = list("G" = Gnew, "H" = H)
+  return(maliste)
+}
+
+
+# # code transition 1
+# vecteurH = c()
+# vecteurH[1] = Hfonction(G)
+# for (i in 2:nmax) {
+#   maliste = transition1(G,vecteurH[i-1])
+#   vecteurH[i] = maliste$H
+#   G = maliste$G
+# }
+# plot(vecteurH)
+
+# code transition 2
+vecteurH = c()
+vecteurH[1] = Hfonction(G)
+for (i in 2:nmax) {
+  maliste = transition2(G,vecteurH[i-1])
+  vecteurH[i] = maliste$H
+  G = maliste$G
+}
+plot(vecteurH)
+
+
+
+###############################################################
+###                                                         ###
+###                                                         ###
+###         Affichage de la carte avec un G                 ###
+###                                                         ###
+###                                                         ###
+###############################################################
+
+
+## Vecteur couleus des niveau de gris suivant G
+
+vect_couleurs= gray(1-G/L)
+
+
+## recupertion du fond de carte et affichage
+
+library(maptools)
+setwd('C:/Users/benri/Dropbox/MasterProba/Simulation_et_Copules/Projet2')
+fdc = readShapeSpatial("DEPARTEMENT")
+
+
+A=fdc
+A$CODE_DEPT=as.numeric(as.character(A$CODE_DEPT))
+ligne=which(is.na(A$CODE_DEPT))  
+A$CODE_DEPT[ligne]=20
+A = A[order(A$CODE_DEPT),]
+fdc=A[order(A$CODE_DEPT),]
+
+couleurs = c("blue","red","yellow","green")
+
+vect_couleurs=c(vect_couleurs[1:20],vect_couleurs[20],vect_couleurs[21:95])
+
+plot(fdc,col=vect_couleurs)
+
